@@ -81,3 +81,10 @@ input.submit{
 	border-color:#1D2244;
 	float:right;
 }
+
+input.submit:hover{
+	background-color: #1D2244;
+	color: #ffffff;
+	border-color:  #1D2244;
+	float:right;
+}

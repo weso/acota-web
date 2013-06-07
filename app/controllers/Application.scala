@@ -9,4 +9,11 @@ object Application extends Controller {
     Ok(views.html.index("Demo"))
   }
   
+  def recommend = Action {
+    Ok(views.html.index("Demo"))
+  }
+  
+  def feedback = Action {
+    Ok(views.html.index("Demo"))
+  }
 }
