@@ -1,7 +1,33 @@
 @(message: String)
 
-@main("Welcome to Play 2.1") {
-    
-    @play20.welcome(message)
+@main(message) {
+		<div class="row">
+			<div class="large-8 large-centered columns">
+				<p class="result">
+					Tags: <!--<span class="pill">Semantics</span>
+					<span class="pill">Research</span>-->
+				</p>
+				<form>
+					<div class="row">
+						<div class="large-12 columns">
+							<label>URI</label>
+							<input type="text" placeholder="http://www.example.es">
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-12 columns">
+							<label>Title</label>
+							<input type="text" placeholder="A nice title...">
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-12 columns">
+							<label>Description</label>
+							<textarea  placeholder="A cool description..."></textarea>
+						</div>
+					</div>
+					<input type="submit" class="button small submit" value="Generate Tags">
+				</form>
+			</div>
     
 }
