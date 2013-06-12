@@ -36,12 +36,13 @@ object Application extends Controller {
     tokenizerE, wordnetE, googleE))
     
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    Ok(views.html.index("Demo."))
   }
 
   def recommend = Action { implicit request =>
+    println("ENTRA")
+    println("Request :"+request.body)
     request.body.asJson.map { json =>
-      println(json)
       json.asOpt[WResource].map { wResource =>
         val resource = new ResourceTO()
         resource.setUri(wResource.uri)
