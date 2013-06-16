@@ -8,6 +8,8 @@
 				this.uri = " ";
 				this.label = " ";
 				this.description = " ";
+				
+				this.ws = $("div[data-ws]").attr("data-ws");
 			};
 			
 			Form.prototype.isReady = function(){
@@ -21,7 +23,7 @@
 			var form = new Form();
 			
 			var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-            var wsSocket = new WS("ws://localhost:9000/ws");
+            var wsSocket = new WS(form.ws);
 					
 			$('#uri').change(function() {
 				form.uri = $(this).val();
@@ -29,8 +31,8 @@
 			});
 			
 			$('#uri').keyup(function(evt) {
+				form.uri = $(this).val();
 			    if (evt.keyCode == 32) {
-			    	form.uri = $(this).val();
  			    	doPost();
  				}
 			});
@@ -41,8 +43,8 @@
 			});
 				
 			$('#label').keyup(function(evt) {
+				form.label = $(this).val();
 			    if (evt.keyCode == 32) {
-			    	form.label = $(this).val();
  			    	doPost();
  				}
 			});	
@@ -53,8 +55,8 @@
 			});
 			
 			$('#description').keyup(function(evt) {
+				form.description = $(this).val();
 			    if (evt.keyCode == 32) {
-			    	form.description = $(this).val();
  			    	doPost();
  				}
 			});
@@ -79,7 +81,7 @@
 
 				if(form.isReady()){
 					wsSocket.close();
-					wsSocket = new WS("ws://localhost:9000/ws");
+					wsSocket = new WS(form.ws);
 					wsSocket.send( JSON.stringify(form.getJson()));
 				/*	$.ajax({
 						type:"POST",

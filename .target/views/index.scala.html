@@ -1,7 +1,7 @@
-@(message: String)
+@(message: String)(implicit request: RequestHeader)
 
 @main(message) {
-		<div class="row">
+		<div class="row" data-ws="@routes.WebSocket.recommend.webSocketURL()">
 			<div class="large-8 large-centered columns">
 				<div class="result">
 					<p>Tags:</p>

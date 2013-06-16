@@ -26,14 +26,12 @@ import models.WResource
 
 object Application extends Controller {
 
-  //AcotaUtil.enchain(Array[EnhancerAdapter](luceneE, openNLPE,
-  //tokenizerE, wordnetE, googleE))
-
   val coreConf = new CoreConfiguration
   val feedbackConf = new FeedbackConfiguration
 
   def index = Action {
-    Ok(views.html.index("Demo."))
+    implicit request => 
+      Ok(views.html.index("Demo"))
   }
 
   def recommend = Action { implicit request =>
