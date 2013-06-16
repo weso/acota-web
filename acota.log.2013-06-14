@@ -1,0 +1,84 @@
+2013-06-14 09:04:30 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-14 09:09:51 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-14 09:09:53 EnhancerAdapter [ERROR] Exception enhancing request.
+es.weso.acota.core.exceptions.AcotaConfigurationException: com.cybozu.labs.langdetect.LangDetectException: duplicate the same language profile
+	at es.weso.acota.core.utils.lang.LanguageDetector.loadProfilesAsJson(LanguageDetector.java:121)
+	at es.weso.acota.core.utils.lang.LanguageDetector.detect(LanguageDetector.java:89)
+	at es.weso.acota.core.business.enhancer.LuceneEnhancer.extractTerms(LuceneEnhancer.java:126)
+	at es.weso.acota.core.business.enhancer.LuceneEnhancer.extractLabelTerms(LuceneEnhancer.java:111)
+	at es.weso.acota.core.business.enhancer.LuceneEnhancer.execute(LuceneEnhancer.java:86)
+	at es.weso.acota.core.business.enhancer.EnhancerAdapter.enhance(EnhancerAdapter.java:55)
+	at controllers.Application$$anonfun$recommend$1$$anonfun$apply$1$$anonfun$apply$2.apply(Application.scala:55)
+	at controllers.Application$$anonfun$recommend$1$$anonfun$apply$1$$anonfun$apply$2.apply(Application.scala:38)
+	at scala.Option.map(Option.scala:145)
+	at controllers.Application$$anonfun$recommend$1$$anonfun$apply$1.apply(Application.scala:38)
+	at controllers.Application$$anonfun$recommend$1$$anonfun$apply$1.apply(Application.scala:37)
+	at scala.Option.map(Option.scala:145)
+	at controllers.Application$$anonfun$recommend$1.apply(Application.scala:37)
+	at controllers.Application$$anonfun$recommend$1.apply(Application.scala:36)
+	at play.api.mvc.ActionBuilder$$anon$1.apply(Action.scala:217)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2$$anonfun$apply$5$$anonfun$apply$6.apply(Action.scala:109)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2$$anonfun$apply$5$$anonfun$apply$6.apply(Action.scala:109)
+	at play.utils.Threads$.withContextClassLoader(Threads.scala:18)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2$$anonfun$apply$5.apply(Action.scala:108)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2$$anonfun$apply$5.apply(Action.scala:106)
+	at scala.Option.map(Option.scala:145)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2.apply(Action.scala:106)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2.apply(Action.scala:99)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:137)
+	at scala.concurrent.forkjoin.ForkJoinTask$AdaptedRunnableAction.exec(ForkJoinTask.java:1417)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:262)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:975)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1478)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+Caused by: com.cybozu.labs.langdetect.LangDetectException: duplicate the same language profile
+	at com.cybozu.labs.langdetect.DetectorFactory.addProfile(DetectorFactory.java:125)
+	at com.cybozu.labs.langdetect.DetectorFactory.loadProfile(DetectorFactory.java:108)
+	at es.weso.acota.core.utils.lang.LanguageDetector.loadProfilesAsJson(LanguageDetector.java:117)
+	... 30 more
+2013-06-14 09:13:38 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-14 11:52:47 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-14 11:59:52 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-14 12:06:55 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-14 12:42:46 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-14 12:45:47 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-14 12:45:48 EnhancerAdapter [ERROR] Exception enhancing request.
+es.weso.acota.core.exceptions.AcotaConfigurationException: com.cybozu.labs.langdetect.LangDetectException: duplicate the same language profile
+	at es.weso.acota.core.utils.lang.LanguageDetector.loadProfilesAsJson(LanguageDetector.java:121)
+	at es.weso.acota.core.utils.lang.LanguageDetector.detect(LanguageDetector.java:89)
+	at es.weso.acota.core.business.enhancer.LuceneEnhancer.extractTerms(LuceneEnhancer.java:126)
+	at es.weso.acota.core.business.enhancer.LuceneEnhancer.extractLabelTerms(LuceneEnhancer.java:111)
+	at es.weso.acota.core.business.enhancer.LuceneEnhancer.execute(LuceneEnhancer.java:86)
+	at es.weso.acota.core.business.enhancer.EnhancerAdapter.enhance(EnhancerAdapter.java:55)
+	at controllers.Application$$anonfun$recommend$1$$anonfun$apply$1$$anonfun$apply$2.apply(Application.scala:58)
+	at controllers.Application$$anonfun$recommend$1$$anonfun$apply$1$$anonfun$apply$2.apply(Application.scala:42)
+	at scala.Option.map(Option.scala:145)
+	at controllers.Application$$anonfun$recommend$1$$anonfun$apply$1.apply(Application.scala:42)
+	at controllers.Application$$anonfun$recommend$1$$anonfun$apply$1.apply(Application.scala:41)
+	at scala.Option.map(Option.scala:145)
+	at controllers.Application$$anonfun$recommend$1.apply(Application.scala:41)
+	at controllers.Application$$anonfun$recommend$1.apply(Application.scala:40)
+	at play.api.mvc.ActionBuilder$$anon$1.apply(Action.scala:217)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2$$anonfun$apply$5$$anonfun$apply$6.apply(Action.scala:109)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2$$anonfun$apply$5$$anonfun$apply$6.apply(Action.scala:109)
+	at play.utils.Threads$.withContextClassLoader(Threads.scala:18)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2$$anonfun$apply$5.apply(Action.scala:108)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2$$anonfun$apply$5.apply(Action.scala:106)
+	at scala.Option.map(Option.scala:145)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2.apply(Action.scala:106)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$2.apply(Action.scala:99)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:137)
+	at scala.concurrent.forkjoin.ForkJoinTask$AdaptedRunnableAction.exec(ForkJoinTask.java:1417)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:262)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:975)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1478)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+Caused by: com.cybozu.labs.langdetect.LangDetectException: duplicate the same language profile
+	at com.cybozu.labs.langdetect.DetectorFactory.addProfile(DetectorFactory.java:125)
+	at com.cybozu.labs.langdetect.DetectorFactory.loadProfile(DetectorFactory.java:108)
+	at es.weso.acota.core.utils.lang.LanguageDetector.loadProfilesAsJson(LanguageDetector.java:117)
+	... 30 more

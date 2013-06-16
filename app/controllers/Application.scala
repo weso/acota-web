@@ -2,7 +2,6 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.WResource
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import formatters.WResourceFormatter._
@@ -21,27 +20,23 @@ import es.weso.acota.core.business.enhancer.WordnetEnhancer
 import es.weso.acota.core.utils.AcotaUtil
 import es.weso.acota.core.business.enhancer.EnhancerAdapter
 import es.weso.acota.core.entity.RequestSuggestionTO
+import play.api.libs.iteratee.Enumerator
+import play.api.libs.iteratee.Iteratee
+import models.WResource
 
 object Application extends Controller {
 
+  //AcotaUtil.enchain(Array[EnhancerAdapter](luceneE, openNLPE,
+  //tokenizerE, wordnetE, googleE))
+
   val coreConf = new CoreConfiguration
   val feedbackConf = new FeedbackConfiguration
-  val luceneE = new LuceneEnhancer(coreConf)
-  val openNLPE = new OpenNLPEnhancer(coreConf)
-  val tokenizerE = new TokenizerEnhancer(coreConf)
-  val wordnetE = new WordnetEnhancer(coreConf)
-  val googleE = new GoogleEnhancer(coreConf)
 
-  AcotaUtil.enchain(Array[EnhancerAdapter](luceneE, openNLPE,
-    tokenizerE, wordnetE, googleE))
-    
   def index = Action {
     Ok(views.html.index("Demo."))
   }
 
   def recommend = Action { implicit request =>
-    println("ENTRA")
-    println("Request :"+request.body)
     request.body.asJson.map { json =>
       json.asOpt[WResource].map { wResource =>
         val resource = new ResourceTO()
@@ -51,10 +46,26 @@ object Application extends Controller {
 
         val request = new RequestSuggestionTO()
         request.setResource(resource)
+
+        val luceneE = new LuceneEnhancer(coreConf)
+        val openNLPE = new OpenNLPEnhancer(coreConf)
+        val tokenizerE = new TokenizerEnhancer(coreConf)
+        val wordnetE = new WordnetEnhancer(coreConf)
+        val googleE = new GoogleEnhancer(coreConf)
+
         Logger.info("Llamada")
-        val suggestions = luceneE.enhance(request)
-        Logger.info("Listo")
-        val result = AcotaUtil.sortTags(suggestions.getTags()).subList(0, 12).map(a => Json.obj("label" ->a.getValue().getLabel(), "lang" -> a.getValue().getLang(), "value" -> a.getValue().getValue()))
+        var suggestions = luceneE.enhance(request)
+        Logger.info("Listo" + suggestions.getTags().size())
+        suggestions = openNLPE.enhance(request)
+        Logger.info("Listo" + suggestions.getTags().size())
+        suggestions = tokenizerE.enhance(request)
+        Logger.info("Listo" + suggestions.getTags().size())
+        suggestions = wordnetE.enhance(request)
+        Logger.info("Listo" + suggestions.getTags().size())
+        suggestions = googleE.enhance(request)
+        Logger.info("Listo" + suggestions.getTags().size())
+
+        val result = AcotaUtil.sortTags(suggestions.getTags()).subList(0, 12).map(a => Json.obj("label" -> a.getValue().getLabel(), "lang" -> a.getValue().getLang(), "value" -> a.getValue().getValue()))
         Logger.info("Done")
         Ok(Json.obj("status" -> "OK", "recommendations" -> result))
       }.getOrElse(JsonBadRequest("Bad Request"))

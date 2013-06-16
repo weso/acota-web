@@ -42,14 +42,41 @@ p.result {
 	font-weight: bold;
 }
 
-.pill {
+.pillb {
+	float:left;
+	display: block;
+	margin-right:8px;
+	margin-bottom: 10px;
+	line-height: 1.2em;
+}
+
+.rank, .tag, .lang {
     background: linear-gradient(90deg, #1D2244 19%, #0D1234 100%) repeat scroll 0 0 transparent;
     border: 2px solid #567C9A;
-    border-radius: 2px 2px 2px 2px;
     color: #ffffff;
     font-weight: bold;
     padding: 2px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.rank{
+	border-radius: 2px 0 0  2px;
+}
+
+.tag{
+}
+
+.lang{
+	border-radius: 0px 2px 2px 0px;
+}
+
+.lang:hover, .tag:hover{
+	background: #567C9A;
+}
+
+.pill:hover {
+	color: linear-gradient(90deg, #1D2244 19%, #0D1234 100%) repeat scroll 0 0 transparent;
+	background: #ffffff;
 }
 
 label{
