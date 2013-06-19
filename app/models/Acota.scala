@@ -21,23 +21,39 @@ import es.weso.acota.core.business.enhancer.WordnetEnhancer
 import es.weso.acota.core.business.enhancer.GoogleEnhancer
 import es.weso.acota.core.entity.ResourceTO
 import es.weso.acota.core.entity.RequestSuggestionTO
+import es.weso.acota.core.entity.SuggestionTO
 import es.weso.acota.core.utils.AcotaUtil
 import scala.collection.JavaConversions._
 import akka.pattern._
-
-import akka.pattern.ask
+import java.security.SecureRandom
+import es.weso.acota.core.business.enhancer.LabelRecommenderEnhancer
+import es.weso.acota.core.FeedbackConfiguration
 
 object Acota {
 
   implicit val timeout = akka.util.Timeout(1 second)
 
+  val holder = Akka.system.actorOf(Props[HolderActor])
+  val coreConf = new CoreConfiguration
+  coreConf.setMemcachedEnabled(true)
+  val feedbackConf = new FeedbackConfiguration
+
   def join = WebSocket.async[JsValue] {
     requestHeader =>
-      val actor = Akka.system.actorOf(Props[EchoActor])
+      val actor = Akka.system.actorOf(Props[AcotaActor])
       (actor ? Start()) map {
         case Connected(event) =>
           val in = Iteratee.foreach[JsValue] {
-            event => actor ! Recommend((event \ "uri").as[String], (event \ "label").as[String], (event \ "description").as[String])
+            event =>
+              Logger.info(event.toString)
+              val id = (event \ "id").as[String]
+              if (id equals "?") {
+                actor ! Connect()
+              } else if (id==null){
+                
+              }else{
+                actor ! Recommend(id, (event \ "uri").as[String], (event \ "label").as[String], (event \ "description").as[String])
+              }
           }
           (in, event)
       }
@@ -45,52 +61,6 @@ object Acota {
 }
 
 // Actor messages
-case class Message(msg: JsValue)
 case class Start()
 case class Connected(out: PushEnumerator[JsValue])
-case class Recommend(uri: String, label: String, description: String)
 
-class EchoActor extends Actor {
-  var out: PushEnumerator[JsValue] = _
-  val coreConf = new CoreConfiguration
-  override def receive = {
-    case Start() =>
-      this.out = Enumerator.imperative[JsValue]()
-      sender ! Connected(out)
-    case Recommend(uri, label, description) => {
-      val resource = new ResourceTO()
-      resource.setUri(uri)
-      resource.setLabel(label)
-      resource.setDescription(description)
-
-      val request = new RequestSuggestionTO()
-      request.setResource(resource)
-
-      val luceneE = new LuceneEnhancer(coreConf)
-      val openNLPE = new OpenNLPEnhancer(coreConf)
-      val tokenizerE = new TokenizerEnhancer(coreConf)
-      val wordnetE = new WordnetEnhancer(coreConf)
-      val googleE = new GoogleEnhancer(coreConf)
-      var suggestions = luceneE.enhance(request)
-      Logger.info("Listo" + suggestions.getTags().size())
-      this.out.push(Json.obj("recommendations" -> generateJson(request)))
-      suggestions = openNLPE.enhance(request)
-      Logger.info("Listo" + suggestions.getTags().size())
-      this.out.push(Json.obj("recommendations" -> generateJson(request)))
-      suggestions = tokenizerE.enhance(request)
-      Logger.info("Listo" + suggestions.getTags().size())
-      this.out.push(Json.obj("recommendations" -> generateJson(request)))
-      suggestions = wordnetE.enhance(request)
-      Logger.info("Listo" + suggestions.getTags().size())
-      this.out.push(Json.obj("recommendations" -> generateJson(request)))
-      suggestions = googleE.enhance(request)
-      Logger.info("Listo" + suggestions.getTags().size())
-      this.out.push(Json.obj("recommendations" -> generateJson(request)))
-    }
-  }
-  def generateJson(request: RequestSuggestionTO) = {
-    val tags = AcotaUtil.sortTags(request.getSuggestions.getTags())
-    val limit = if (tags.size() > 12) 12 else tags.size()
-    tags.subList(0, limit).map(a => Json.obj("label" -> a.getValue().getLabel(), "lang" -> a.getValue().getLang(), "value" -> a.getValue().getValue()))
-  }
-}

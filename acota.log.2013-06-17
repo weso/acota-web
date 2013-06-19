@@ -1,0 +1,21 @@
+2013-06-17 01:25:25 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-17 12:20:18 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-17 12:31:31 EnhancerAdapter [ERROR] Exception enhancing request.
+java.io.IOException: Bad Request http://google.com/complete/search?output=toolbar&q=b%C3%BAsqueda+de+empleo&hl=pt
+	at es.weso.acota.core.utils.rest.MemcachedRESTClient.makeRESTCall(MemcachedRESTClient.java:234)
+	at es.weso.acota.core.utils.rest.MemcachedRESTClient.execute(MemcachedRESTClient.java:124)
+	at es.weso.acota.core.business.enhancer.GoogleEnhancer.enrich(GoogleEnhancer.java:125)
+	at es.weso.acota.core.business.enhancer.GoogleEnhancer.execute(GoogleEnhancer.java:100)
+	at es.weso.acota.core.business.enhancer.EnhancerAdapter.enhance(EnhancerAdapter.java:55)
+	at models.EchoActor$$anonfun$receive$1.applyOrElse(Acota.scala:86)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:425)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:386)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:230)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:212)
+	at akka.dispatch.ForkJoinExecutorConfigurator$MailboxExecutionTask.exec(AbstractDispatcher.scala:502)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:262)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:975)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1478)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:104)
+2013-06-17 12:34:02 SeedConfiguration [WARN] acota.properties not found, Using default values.
+2013-06-17 14:34:09 SeedConfiguration [WARN] acota.properties not found, Using default values.

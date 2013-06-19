@@ -1,72 +1,97 @@
-			function Form(){
-				var modified = false;
-				
-				this.result = $(".result");
-				
-				this.recommendations = {}
-				
-				this.uri = " ";
-				this.label = " ";
-				this.description = " ";
+			function Form() {
+			    var modified = false;
+
+			    this.result = $(".result");
+
+			    this.rank = new Array();
+
+			    this.uri = " ";
+			    this.label = " ";
+			    this.description = " ";
+
+			    this.serial = 0;
+
+			    this.ws = $("div[data-ws]").attr("data-ws");
 			};
-			
-			Form.prototype.isReady = function(){
-				return this.label.length > 15 && this.description.length > 30;
+
+			Form.prototype.isReady = function () {
+			    return this.label.length > 15 && this.description.length > 30;
 			}
-			
-			Form.prototype.getJson = function(){
-				return {"uri":this.uri, "label":this.label, "description":this.description};
+
+			Form.prototype.getJson = function () {
+			    return {
+			        "uri": this.uri,
+			        "label": this.label,
+			        "description": this.description,
+				"serial": ++this.serial				
+			    };
 			}
-			
+
 			var form = new Form();
-			
-			var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket
-            		var chatSocket = new WS("ws://localhost:9000/recommene")
-					
-			$('#uri').change(function() {
-				form.uri = $(this).val();
-				doPost();
+
+			var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
+			var wsSocket = new WS(form.ws);
+
+			$('#uri').change(function () {
+			    form.uri = $(this).val();
+			    doPost();
 			});
-			
-			$('#uri').keyup(function(evt) {
+
+			$('#uri').keyup(function (evt) {
+			    form.uri = $(this).val();
 			    if (evt.keyCode == 32) {
-			    	form.uri = $(this).val();
- 			    	doPost();
- 				}
+			        doPost();
+			    }
 			});
-			
-			$('#label').change(function() {
-				form.label = $(this).val();
-				doPost();
+
+			$('#label').change(function () {
+			    form.label = $(this).val();
+			    doPost();
 			});
-				
-			$('#label').keyup(function(evt) {
+
+			$('#label').keyup(function (evt) {
+			    form.label = $(this).val();
 			    if (evt.keyCode == 32) {
-			    	form.label = $(this).val();
- 			    	doPost();
- 				}
-			});	
-				
-			$('#description').change(function() {
-				form.description = $(this).val();
-				doPost();
+			        doPost();
+			    }
 			});
-			
-			('#description').keyup(function(evt) {
+
+			$('#description').change(function () {
+			    form.description = $(this).val();
+			    doPost();
+			});
+
+			$('#description').keyup(function (evt) {
+			    form.description = $(this).val();
 			    if (evt.keyCode == 32) {
-			    	form.description = $(this).val();
- 			    	doPost();
- 				}
+			        doPost();
+			    }
 			});
-			
-			function doPost(){
-            
-            			var sendMessage = function() {
-                			chatSocket.send( JSON.stringify(form.getJson());
-            			}
-            
-				if(form.isReady()){
-					$.ajax({
+
+			var receiveEvent = function (event) {
+			    var data = JSON.parse(event.data);
+			    var i = 1;
+			    if(data.serial >= form.serial){
+			    $.each(data.recommendations, function () {
+			        var current = form.rank[i]
+			        if (current == null || current == undefined) {
+			            form.result.append('<div class="pillb"><span class="rank">' + (i) + '</span><span class="tag" data-rank="' + (i) + '">' + this.label + '</span><span class="lang">' + this.lang + '</span></div>');
+			            form.rank[i] = $('span[data-rank=' + i + ']');
+			        } else {
+			            form.rank[i].text(this.label);
+			        }
+			        i++;
+			    });
+				}
+			}
+
+			    function doPost() {
+
+			        if (form.isReady()) {
+			            wsSocket.close();
+			            wsSocket = new WS(form.ws);
+			            wsSocket.send(JSON.stringify(form.getJson()));
+			            /*	$.ajax({
 						type:"POST",
 						url:"/recommend",
 						contentType:"application/json",
@@ -84,5 +109,8 @@
 							alert(":( "+textStatus+" "+errorThrown);
 						}
 					});
-				}
-			};
+				*/
+			        }
+			    };
+
+			wsSocket.onmessage = receiveEvent;

@@ -10,7 +10,6 @@ import scala.concurrent.duration._
 import play.api.libs.concurrent.Akka
 import play.api.libs.concurrent.Akka
 import play.api.Play.current
-import models.EchoActor
 import models.Acota._
 
 object WebSocket extends Controller {

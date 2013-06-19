@@ -3,8 +3,23 @@
 @main(message) {
 		<div class="row" data-ws="@routes.WebSocket.recommend.webSocketURL()">
 			<div class="large-8 large-centered columns">
+				<div class="row">
+					<div class="large-12 columns">
+						<p>Tags:</p>
+					</div>
+					<div class="large-12 columns feedback ">
+					</div>
+				</div>
+				<form id="custom" class="combined row">
+					<div class="large-9 columns f-left">
+						<input id="customTag" name="tag" type="text" placeholder="A custom tag...">
+					</div>
+					<div class="large-3 columns f-right">
+						<input id="addCustomTag" type="button" class="button small submit" value="Add Tag">
+					</div>
+				</form>
 				<div class="result">
-					<p>Tags:</p>
+					<p>Recommended Tags:</p>
 				</div>
 				<form>
 					<div class="row">
@@ -25,8 +40,8 @@
 							<textarea id="description" name="description"  placeholder="A cool description..."></textarea>
 						</div>
 					</div>
-					<input type="submit" class="button small submit" value="Generate Tags">
 				</form>
 			</div>
+		</div>
     
 }
