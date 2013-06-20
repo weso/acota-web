@@ -25,14 +25,19 @@ import play.api.libs.iteratee._
 import play.api.libs.concurrent._
 import play.api.libs.concurrent.Execution.Implicits._
 import models._
+import es.weso.acota.persistence.factory.FactoryDAO
+import java.util.Date
 
 case class Connect()
 case class Recommend(id: String, uri: String, label: String, description: String)
-
+case class Feedback(id: String, uri: String, tag:String)
 class AcotaActor extends Actor {
   implicit val timeout = akka.util.Timeout(1 second)
   var out: PushEnumerator[JsValue] = _
   val random = new SecureRandom
+  val labelPersistence = FactoryDAO.createLabelDAO(Acota.feedbackConf)
+  val documentPersistence = FactoryDAO.createDocumentDAO(Acota.feedbackConf)
+  val feedbackPersistence = FactoryDAO.createFeedbackDAO(Acota.feedbackConf)
   override def receive = {
     case Start() =>
       this.out = Enumerator.imperative[JsValue]()
@@ -121,6 +126,14 @@ class AcotaActor extends Actor {
         runA1()
       }
 
+    }
+    case Feedback(id, uri, tag) => {
+    	Logger.info("Persistence "+uri+" "+tag)
+    	if(this.labelPersistence.getLabelByHash(tag.hashCode)==null)
+    		this.labelPersistence.saveLabel(tag.hashCode, tag)
+    	if(this.documentPersistence.getDocumentByHashCode(uri.hashCode)==null)
+    		this.documentPersistence.saveDocument(uri.hashCode, uri)
+    	this.feedbackPersistence.saveFeedback(new es.weso.acota.core.entity.persistence.Feedback(1,1,tag,uri,new Date()))
     }
   }
 

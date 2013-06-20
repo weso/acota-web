@@ -28,6 +28,7 @@ import akka.pattern._
 import java.security.SecureRandom
 import es.weso.acota.core.business.enhancer.LabelRecommenderEnhancer
 import es.weso.acota.core.FeedbackConfiguration
+import play.api.libs.json.Format._
 
 object Acota {
 
@@ -45,13 +46,21 @@ object Acota {
         case Connected(event) =>
           val in = Iteratee.foreach[JsValue] {
             event =>
+              //event.asOpt[St]
               Logger.info(event.toString)
-              val id = (event \ "id").as[String]
-              if (id equals "?") {
+              val idM : Option[String]= (event \ "id").asOpt[String].map {
+                case a => a
+              }
+              val feedbackM : Option[String] = (event \ "feedback").asOpt[String].map {
+                case a => a
+              }
+              val id = idM.getOrElse(null)
+              val feedback = feedbackM.getOrElse(null)
+              if(feedback!=null){
+            	  actor ! Feedback(id, (event \ "uri").as[String], feedback)
+              }else if (id equals "?") {
                 actor ! Connect()
-              } else if (id==null){
-                
-              }else{
+              } else {
                 actor ! Recommend(id, (event \ "uri").as[String], (event \ "label").as[String], (event \ "description").as[String])
               }
           }

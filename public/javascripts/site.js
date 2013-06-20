@@ -28,6 +28,14 @@
 			        "description": this.description		
 			    };
 			}
+			
+			Form.prototype.getJsonF = function (tag) {
+			    return {
+			    	"id": this.id,
+			        "uri": this.uri,
+			        "feedback": tag	
+			    };
+			}
 
 			var form = new Form();
 
@@ -70,17 +78,21 @@
 			    }
 			});
 			
-			$('#addCustomTag').click(function(){
-				var text = $('#customTag').val();
-				$('#customTag').val("")
-				addTag(text);
-			});
-			
 			$('form#custom').submit(function (e) {
 				e.preventDefault();
 				var text = $('#customTag').val();
 				$('#customTag').val("")
 				addTag(text);
+			});
+			
+			$('#sendFeedback').click(function (e) {
+				if($.trim(form.uri).length > 3){
+					$.each(Object.keys(form.tags), function(index, item){
+						wsSocket.send(JSON.stringify(form.getJsonF(item)));
+						$('span[data-tag="' + item + '"]').parent().fadeOut(function(){$(this).remove()});
+					});
+					form.tags = new Array();
+				}
 			});
 
 			var receiveEvent = function (event) {
@@ -106,9 +118,9 @@
 			}
 
 			function addTag(text) {
-				if(form.tags[text]==null){
+				if(form.tags[text]==null||form.tags[text]==undefined){
 					form.tags[text]=text;
-					form.feedback.append('<div class="pilla"><span class="tag">' + text + '</span><span class="rem" data-tag="' + text + '"> x </span></div>').fadeIn(300);
+					form.feedback.append('<div class="pilla"><span class="tag">' + text + '</span><span class="rem" data-tag="' + text + '">x</span></div>').fadeIn(300);
 					$('span[data-tag="' + text + '"]').click(function(){
 						var text = $(this).data('tag');
 						delete form.tags[text];

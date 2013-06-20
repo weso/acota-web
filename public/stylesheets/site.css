@@ -60,7 +60,9 @@ p.result {
 
 .pilla .rem{
 	border-radius: 0 2px 2px 0;
-	background: red;
+	background: #b081d2;
+	padding-left: 0.25em;
+	padding-right: 0.25em;
 }
 
 .rank, .tag, .lang, .rem {
@@ -150,4 +152,8 @@ input.submit:hover{
 	border-radius: 0 2px 2px 0;
 	width:100%;
 	padding-top:10px !important;
+}
+
+#sendFeedback {
+	width: 100%;
 }
